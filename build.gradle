@@ -36,7 +36,8 @@ repositories {
 
 dependencies {
     compile "io.netty:netty-all:5.0.0.Alpha2"
-	compile "net.petercashel.JMSDd:JMSDd-Common:0.0.1-SNAPSHOT"
+	compile "com.google.code.gson:gson:2.3.1"
+    compile "net.petercashel.JMSDd:JMSDd-Common:0.0.1-SNAPSHOT"
 }
 
 jar {
