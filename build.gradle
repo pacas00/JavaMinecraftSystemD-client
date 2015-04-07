@@ -20,6 +20,19 @@ version = '0.0.1-SNAPSHOT'
 archivesBaseName = 'JMSDd-client'
 buildDir = 'target'
 
+defaultTasks 'build', 'install'
+
+repositories {
+        mavenCentral()
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+		maven {
+            name = "HTB3"
+            url = "http://htb2.petercashel.net:81"
+        }
+    }
 
 dependencies {
     compile "io.netty:netty-all:5.0.0.Alpha2"
@@ -73,4 +86,8 @@ uploadArchives {
                 }
         }
     }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
 }
