@@ -19,10 +19,11 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import net.petercashel.commonlib.threading.threadManager;
+import net.petercashel.commonlib.util.OS_Util;
 import net.petercashel.jmsDc.command.commandClient;
 import net.petercashel.nettyCore.client.clientCore;
+import net.petercashel.nettyCore.clientUDS.clientCoreUDS;
 import net.petercashel.nettyCore.common.exceptions.ConnectionShuttingDown;
-import net.petercashel.nettyCore.server.serverCore;
 import net.petercashel.nettyCore.ssl.SSLContextProvider;
 import static net.petercashel.jmsDc.Configuration.*;
 
@@ -33,12 +34,19 @@ public class clientMain {
 	public static String host = "127.0.0.1";
 	public static int port = 14444;
 	private static Boolean CLIMode;
-	private static String CLIPath;
-	
 	public static void main(String[] args) {
 		//init client console and network;
 		configInit();
-		clientCore.UseSSL = getDefault(getJSONObject(cfg, "clientSettings"), "serverSSLEnable", true);
+		
+		if (getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIMode", true) == true && OS_Util.isWinNT()) {
+			System.err.println("Socket based CLI connections do not function on the Windows Platform.");
+			System.err.println("Please correct your configuration by disabling clientCLIEnable");
+			System.err.println(new File(configDir, "config.json").toPath());
+			
+			System.exit(1);
+			
+		}
+		clientCore.UseSSL = getDefault(getJSONObject(cfg, "clientSettings"), "clientSSLEnable", true);
 		
 		
 		if (getDefault(getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings"), "SSL_UseExternal", true)) {
@@ -49,8 +57,8 @@ public class clientMain {
 				
 		host = getDefault(getJSONObject(cfg, "clientSettings"), "serverAddress", "127.0.0.1");
 		port = getDefault(getJSONObject(cfg, "clientSettings"), "serverPort", 14444);
-		CLIMode = getDefault(getJSONObject(cfg, "clientSettings"), "serverCLIMode", false);
-		CLIPath = getDefault(getJSONObject(cfg, "clientSettings"), "serverCLIPath", "");
+		CLIMode = getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIMode", true);
+		getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIPath", "");
 
 		
 		
@@ -74,7 +82,11 @@ public class clientMain {
 	public static void shutdown() {
 		run = false;
 		try {
+			if (!CLIMode) {
 			clientCore.shutdown();
+			} else {
+				clientCoreUDS.shutdown();
+			}
 		} catch (NullPointerException e) {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -101,7 +113,18 @@ public class clientMain {
 			}
 		});
 		} else {
-			
+			threadManager.getInstance().addRunnable(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						clientCoreUDS.initializeConnection(new File((getJSONObject(cfg, "clientSettings").get("clientCLIPath")).getAsString()).toPath());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						shutdown();
+					}
+				}
+			});
 		}
 		
 	}
