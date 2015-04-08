@@ -24,6 +24,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -142,8 +144,8 @@ public class Configuration {
 
 		getJSONObject(cfg, "authSettings");
 		getDefault(getJSONObject(cfg, "authSettings"), "authenticationEnable", true);
-		getDefault(getJSONObject(cfg, "authSettings"), "authenticationEnable", "");
-		getDefault(getJSONObject(cfg, "authSettings"), "authenticationEnable", "");
+		getDefault(getJSONObject(cfg, "authSettings"), "authenticationUsername", "");
+		getDefault(getJSONObject(cfg, "authSettings"), "authenticationToken", "");
 		saveConfig();
 	}
 }

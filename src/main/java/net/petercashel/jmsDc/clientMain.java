@@ -47,6 +47,11 @@ public class clientMain {
 			
 		}
 		clientCore.UseSSL = getDefault(getJSONObject(cfg, "clientSettings"), "clientSSLEnable", true);
+		clientCore.DoAuth = getDefault(getJSONObject(cfg, "authSettings"), "authenticationEnable", true);
+		clientCore.username = getDefault(getJSONObject(cfg, "authSettings"), "authenticationUsername", "");
+		clientCore.token = getDefault(getJSONObject(cfg, "authSettings"), "authenticationToken", "");
+		System.out.println(clientCore.username);
+		System.out.println(clientCore.token);
 		
 		
 		if (getDefault(getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings"), "SSL_UseExternal", true)) {
