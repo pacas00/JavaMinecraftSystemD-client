@@ -1,18 +1,16 @@
 /*******************************************************************************
- *    Copyright 2015 Peter Cashel (pacas00@petercashel.net)
+ * Copyright 2015 Peter Cashel (pacas00@petercashel.net)
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  *******************************************************************************/
+
 package net.petercashel.jmsDc;
 
 import java.io.File;
@@ -26,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -46,8 +43,9 @@ public class Configuration {
 			byte[] encoded = Files.readAllBytes(new File(configDir, "config.json").toPath());
 			content = new String(encoded, StandardCharsets.US_ASCII);
 			JsonElement jelement = new JsonParser().parse(content);
-		    cfg = jelement.getAsJsonObject();
-		} catch (IOException e) {
+			cfg = jelement.getAsJsonObject();
+		}
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			cfg = new JsonObject();
@@ -72,14 +70,17 @@ public class Configuration {
 			fop.write(contentInBytes);
 			fop.flush();
 			fop.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
-		} finally {
+		}
+		finally {
 			try {
 				if (fop != null) {
 					fop.close();
 				}
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -87,7 +88,7 @@ public class Configuration {
 	}
 
 	public static String getDefault(JsonObject e, String name, String def) {
-		String obj = null; 
+		String obj = null;
 		if (e.has(name)) {
 			obj = e.get(name).getAsString();
 		} else {
@@ -109,16 +110,16 @@ public class Configuration {
 	}
 
 	public static Boolean getDefault(JsonObject e, String name, Boolean def) {
-		Boolean obj = null; 
+		Boolean obj = null;
 		if (e.has(name)) {
-			obj =  e.get(name).getAsBoolean();
+			obj = e.get(name).getAsBoolean();
 		} else {
 			e.addProperty(name, def);
 			obj = e.get(name).getAsBoolean();
 		}
 		return obj;
 	}
-	
+
 	public static JsonObject getJSONObject(JsonObject e, String name) {
 		if (e.has(name)) return e.getAsJsonObject(name);
 		else {
@@ -127,19 +128,22 @@ public class Configuration {
 			return e.getAsJsonObject(name);
 		}
 	}
+
 	public static void configInit() {
 		configDir.mkdirs();
 		loadConfig();
-		
+
 		getJSONObject(cfg, "clientSettings");
 		getDefault(getJSONObject(cfg, "clientSettings"), "serverAddress", "127.0.0.1");
 		getDefault(getJSONObject(cfg, "clientSettings"), "serverPort", 14444);
 		getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIMode", false);
-		getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIPath",  new File("/tmp", "JMSDd.sock").toPath().toString());
+		getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIPath", new File("/tmp", "JMSDd.sock").toPath()
+				.toString());
 		getDefault(getJSONObject(cfg, "clientSettings"), "clientSSLEnable", true);
 		getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings");
 		getDefault(getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings"), "SSL_UseExternal", true);
-		getDefault(getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings"), "SSL_ExternalPath", (new File(configDir, "SSLCERT.p12").toPath().toString()));
+		getDefault(getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings"), "SSL_ExternalPath", (new File(
+				configDir, "SSLCERT.p12").toPath().toString()));
 		getDefault(getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings"), "SSL_ExternalSecret", "secret");
 
 		getJSONObject(cfg, "authSettings");
