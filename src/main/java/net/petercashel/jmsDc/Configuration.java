@@ -135,7 +135,7 @@ public class Configuration {
 		getDefault(getJSONObject(cfg, "clientSettings"), "serverAddress", "127.0.0.1");
 		getDefault(getJSONObject(cfg, "clientSettings"), "serverPort", 14444);
 		getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIMode", false);
-		getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIPath",  new File("/tmp/.JMSDd/", "JMSDd.sock").toPath().toString());
+		getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIPath",  new File("/tmp", "JMSDd.sock").toPath().toString());
 		getDefault(getJSONObject(cfg, "clientSettings"), "clientSSLEnable", true);
 		getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings");
 		getDefault(getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings"), "SSL_UseExternal", true);
