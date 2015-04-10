@@ -1,14 +1,17 @@
 /*******************************************************************************
- * Copyright 2015 Peter Cashel (pacas00@petercashel.net)
+ *    Copyright 2015 Peter Cashel (pacas00@petercashel.net)
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *        http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  *******************************************************************************/
 
 package net.petercashel.jmsDc;
@@ -35,33 +38,47 @@ public class clientMain {
 		// init client console and network;
 		configInit();
 
-		if (getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIMode", true) == true && OS_Util.isWinNT()) {
-			System.err.println("Socket based CLI connections do not function on the Windows Platform.");
-			System.err.println("Please correct your configuration by disabling clientCLIEnable");
+		if (getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIMode",
+				true) == true && OS_Util.isWinNT()) {
+			System.err
+					.println("Socket based CLI connections do not function on the Windows Platform.");
+			System.err
+					.println("Please correct your configuration by disabling clientCLIEnable");
 			System.err.println(new File(configDir, "config.json").toPath());
 
 			System.exit(1);
 
 		}
-		clientCore.UseSSL = getDefault(getJSONObject(cfg, "clientSettings"), "clientSSLEnable", true);
-		clientCore.DoAuth = getDefault(getJSONObject(cfg, "authSettings"), "authenticationEnable", true);
-		clientCore.username = getDefault(getJSONObject(cfg, "authSettings"), "authenticationUsername", "");
-		clientCore.token = getDefault(getJSONObject(cfg, "authSettings"), "authenticationToken", "");
+		clientCore.UseSSL = getDefault(getJSONObject(cfg, "clientSettings"),
+				"clientSSLEnable", true);
+		clientCore.DoAuth = getDefault(getJSONObject(cfg, "authSettings"),
+				"authenticationEnable", true);
+		clientCore.username = getDefault(getJSONObject(cfg, "authSettings"),
+				"authenticationUsername", "");
+		clientCore.token = getDefault(getJSONObject(cfg, "authSettings"),
+				"authenticationToken", "");
 		System.out.println(clientCore.username);
 		System.out.println(clientCore.token);
 
-		if (getDefault(getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings"), "SSL_UseExternal", true)) {
+		if (getDefault(
+				getJSONObject(getJSONObject(cfg, "clientSettings"),
+						"SSLSettings"), "SSL_UseExternal", true)) {
 			SSLContextProvider.useExternalSSL = true;
 			SSLContextProvider.pathToSSLCert = getDefault(
-					getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings"), "SSL_ExternalPath", (new File(
+					getJSONObject(getJSONObject(cfg, "clientSettings"),
+							"SSLSettings"), "SSL_ExternalPath", (new File(
 							configDir, "SSLCERT.p12").toPath().toString()));
 			SSLContextProvider.SSLCertSecret = getDefault(
-					getJSONObject(getJSONObject(cfg, "clientSettings"), "SSLSettings"), "SSL_ExternalSecret", "secret");
+					getJSONObject(getJSONObject(cfg, "clientSettings"),
+							"SSLSettings"), "SSL_ExternalSecret", "secret");
 		}
 
-		host = getDefault(getJSONObject(cfg, "clientSettings"), "serverAddress", "127.0.0.1");
-		port = getDefault(getJSONObject(cfg, "clientSettings"), "serverPort", 14444);
-		CLIMode = getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIMode", true);
+		host = getDefault(getJSONObject(cfg, "clientSettings"),
+				"serverAddress", "127.0.0.1");
+		port = getDefault(getJSONObject(cfg, "clientSettings"), "serverPort",
+				14444);
+		CLIMode = getDefault(getJSONObject(cfg, "clientSettings"),
+				"clientCLIMode", true);
 		getDefault(getJSONObject(cfg, "clientSettings"), "clientCLIPath", "");
 
 		commandClient.init();
@@ -69,8 +86,7 @@ public class clientMain {
 
 		try {
 			Thread.sleep(2000);
-		}
-		catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -89,13 +105,12 @@ public class clientMain {
 			} else {
 				clientCoreUDS.shutdown();
 			}
-		}
-		catch (NullPointerException e) {}
-		catch (InterruptedException e) {
+		} catch (NullPointerException e) {
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ConnectionShuttingDown e) {
 		}
-		catch (ConnectionShuttingDown e) {}
 		threadManager.getInstance().shutdown();
 		System.exit(0);
 
@@ -108,8 +123,7 @@ public class clientMain {
 				public void run() {
 					try {
 						clientCore.initializeConnection(host, port);
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						shutdown();
@@ -121,10 +135,11 @@ public class clientMain {
 				@Override
 				public void run() {
 					try {
-						clientCoreUDS.initializeConnection(new File((getJSONObject(cfg, "clientSettings")
-								.get("clientCLIPath")).getAsString()).toPath());
-					}
-					catch (Exception e) {
+						clientCoreUDS.initializeConnection(new File(
+								(getJSONObject(cfg, "clientSettings")
+										.get("clientCLIPath")).getAsString())
+								.toPath());
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						shutdown();
