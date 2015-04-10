@@ -48,6 +48,9 @@ jar {
 }
 
 task fatJar(type: Jar) {
+    manifest { 
+    attributes "Main-Class": "net.petercashel.jmsDc.clientMain"
+  }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
