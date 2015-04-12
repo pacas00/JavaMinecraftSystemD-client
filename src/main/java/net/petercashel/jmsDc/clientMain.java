@@ -32,7 +32,7 @@ public class clientMain {
 	public static boolean run = true;
 	public static String host = "127.0.0.1";
 	public static int port = 14444;
-	private static Boolean CLIMode;
+	public static Boolean CLIMode;
 
 	public static void main(String[] args) {
 		// init client console and network;

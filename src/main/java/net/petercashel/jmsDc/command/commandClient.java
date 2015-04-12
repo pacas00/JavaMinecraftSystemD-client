@@ -95,7 +95,7 @@ public class commandClient {
 					try {
 						String str = s;
 						str = s.substring(s.indexOf(".") + 1, s.length());
-						if (!clientCore.connClosed) {
+						if (!clientMain.CLIMode) {
 							(PacketRegistry.pack(new CMDInPacket(str)))
 									.sendPacket(clientCore.getChannel());
 						} else {
@@ -115,12 +115,12 @@ public class commandClient {
 					try {
 						int i = s.getBytes().length;
 						byte[] b = s.getBytes();
-						if (!clientCore.connClosed) {
+						if (!clientMain.CLIMode) {
 							(PacketRegistry.pack(new IOInPacket(i, b)))
 									.sendPacket(clientCore.getChannel());
 						} else {
 							(PacketRegistry.pack(new IOInPacket(i, b)))
-									.sendPacket(clientCore.getChannel());
+									.sendPacket(clientCoreUDS.getChannel());
 						}
 						i = 0;
 						b = null;
