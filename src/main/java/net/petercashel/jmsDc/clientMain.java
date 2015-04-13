@@ -17,7 +17,9 @@
 package net.petercashel.jmsDc;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
 import net.petercashel.commonlib.threading.threadManager;
 import net.petercashel.commonlib.util.OS_Util;
 import net.petercashel.jmsDc.command.commandClient;
