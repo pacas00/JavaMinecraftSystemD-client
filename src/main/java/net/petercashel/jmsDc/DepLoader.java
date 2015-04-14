@@ -23,7 +23,7 @@ import net.petercashel.jmsDc.DepLoaderStage2;
 public class DepLoader {
 
 	public static File configDir = new File(System.getProperty("user.home")
-			+ File.separator + ".JMSDd" + File.separator);
+			+ File.separator + ".JMSDc" + File.separator);
 	static String jcabi_aether_url = "https://repo1.maven.org/maven2/com/jcabi/jcabi-aether/0.10.1/jcabi-aether-0.10.1-jar-with-dependencies.jar";
 	static String maven305_url = "http://mirror.ventraip.net.au/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.zip";
 	static File libs = new File(configDir, "./libs/");
