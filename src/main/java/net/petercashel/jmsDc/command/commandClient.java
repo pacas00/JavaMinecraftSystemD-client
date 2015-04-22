@@ -71,15 +71,18 @@ public class commandClient {
 					out.println("Please .connect or .quit");
 				}
 			}
-		} catch (IOException ioe) {
+		}
+		catch (IOException ioe) {
 			System.out.println("Exception while reading input " + ioe);
-		} finally {
+		}
+		finally {
 			// close the streams using close method
 			try {
 				if (br != null) {
 					br.close();
 				}
-			} catch (IOException ioe) {
+			}
+			catch (IOException ioe) {
 				System.out.println("Error while closing stream: " + ioe);
 			}
 
@@ -96,14 +99,13 @@ public class commandClient {
 						String str = s;
 						str = s.substring(s.indexOf(".") + 1, s.length());
 						if (!clientMain.CLIMode) {
-							(PacketRegistry.pack(new CMDInPacket(str)))
-									.sendPacket(clientCore.getChannel());
+							(PacketRegistry.pack(new CMDInPacket(str))).sendPacket(clientCore.getChannel());
 						} else {
-							(PacketRegistry.pack(new CMDInPacket(str)))
-									.sendPacket(clientCoreUDS.getChannel());
+							(PacketRegistry.pack(new CMDInPacket(str))).sendPacket(clientCoreUDS.getChannel());
 						}
 
-					} catch (Exception e) {
+					}
+					catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -116,15 +118,14 @@ public class commandClient {
 						int i = s.getBytes().length;
 						byte[] b = s.getBytes();
 						if (!clientMain.CLIMode) {
-							(PacketRegistry.pack(new IOInPacket(i, b)))
-									.sendPacket(clientCore.getChannel());
+							(PacketRegistry.pack(new IOInPacket(i, b))).sendPacket(clientCore.getChannel());
 						} else {
-							(PacketRegistry.pack(new IOInPacket(i, b)))
-									.sendPacket(clientCoreUDS.getChannel());
+							(PacketRegistry.pack(new IOInPacket(i, b))).sendPacket(clientCoreUDS.getChannel());
 						}
 						i = 0;
 						b = null;
-					} catch (Exception e) {
+					}
+					catch (Exception e) {
 					}
 				}
 			});
